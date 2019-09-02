@@ -46,6 +46,55 @@ begin
   end if;
 
   if tg_op = 'UPDATE' then
+    raise notice 'update';
+    raise notice 'new = %', row_to_json(new);
+    raise notice 'old = %', row_to_json(old);
+    for r in (
+      select
+        row_to_json(ctx) as "Context",
+        lower(tg_op) as "Method",
+        row_to_json(t) as "Row"
+      from (
+        select
+          tg_table_name as "Source",
+          '_' || tg_table_name as "Target",
+          current_database() as "Db",
+          true as "Prime"
+        ) as ctx, (
+          select
+            new."ID" as "ID",
+            case when
+              (new."Field1" <> old."Field1") or
+              (old."Field1" is null and new."Field1" is not null) or
+              (new."Field1" is null and old."Field1" is not null) -- null,     not default
+              then new."Field1"
+              else old."Field1"
+            end as "Field1",
+            case when
+              (new."Field2" <> old."Field2") or
+              (old."Field2" is null and new."Field2" is not null) or
+              (new."Field2" is null and old."Field2" is not null) -- not null, not default
+              then new."Field2"
+              else old."Field2"
+            end as "Field2",
+            case when
+              (new."Field3" <> old."Field3") or
+              (old."Field3" is null and new."Field3" is not null) or
+              (new."Field3" is null and old."Field3" is not null) -- null,     default
+              then new."Field3"
+              else old."Field3"
+            end as "Field3",
+            case when
+              (new."Field4" <> old."Field4") or
+              (old."Field4" is null and new."Field4" is not null) or
+              (new."Field4" is null and old."Field4" is not null) -- not null, default
+              then new."Field4"
+              else old."Field4"
+            end as "Field4"
+        ) t
+    ) loop
+      perform send_jsonrpc(row_to_json(r));
+    end loop;
     return new;
   end if;
 

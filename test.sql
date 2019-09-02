@@ -19,7 +19,7 @@ create extension if not exists pgtap;
 \ir ./definitions.sql
 
 -- Plan the tests.
-select plan(15);
+select plan(16);
 
 
 select has_table('Table');

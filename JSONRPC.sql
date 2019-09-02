@@ -20,12 +20,14 @@ begin
   row := request ->> 'Row';
 
   select
+    "ID",
     "Field1",
     "Field2",
     "Field3",
     "Field4"
     from json_to_record(row)
     as "Table"(
+      "ID" integer,
       "Field1" character varying(255),
       "Field2" character varying(255),
       "Field3" character varying(255),
@@ -53,6 +55,14 @@ begin
   end if;
 
   if method = 'update' then
+    raise notice 'using update = %', row;
+    update "Table" set
+      "Field1"=r."Field1",
+      "Field2"=r."Field2",
+      "Field3"=r."Field3",
+      "Field4"=r."Field4"
+    where
+      "ID"=r."ID";
     return;
   end if;
 

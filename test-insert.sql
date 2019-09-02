@@ -61,10 +61,12 @@ insert into "ViewTable"
 */
 
 select is(
-  (select json_agg(t)::text from (select * from "Table") t),
+  (select json_agg(t)::text from (
+    select "Field1", "Field2", "Field3", "Field4"
+    from "Table") t),
 '[{"Field1":"Case 1::Value 1","Field2":"Case 1::Value 2","Field3":"Case 1::Value 3","Field4":"Case 1::Value 4"}, 
  {"Field1":null,"Field2":"Case 2::Value 2","Field3":"Case 2::Value 3","Field4":"Case 2::Value 4"}, 
  {"Field1":null,"Field2":"Case 3::Value 2","Field3":"default field3","Field4":"Case 3::Value 4"}, 
  {"Field1":null,"Field2":"Case 4::Value 2","Field3":"default field3","Field4":"default field4"}]',
-  'Table has the expected cases'
+  'Table has the expected cases for insert'
 );
