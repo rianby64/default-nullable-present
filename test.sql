@@ -19,7 +19,7 @@ create extension if not exists pgtap;
 \ir ./definitions.sql
 
 -- Plan the tests.
-select plan(1);
+select plan(15);
 
 
 select has_table('Table');
@@ -39,16 +39,11 @@ SELECT has_view('ViewTable');
 select has_column('ViewTable', 'Field1');
 
 select has_column('ViewTable', 'Field2');
-select col_not_null('ViewTable', 'Field2');
-
 select has_column('ViewTable', 'Field3');
-select col_has_default('ViewTable', 'Field3');
-
 select has_column('ViewTable', 'Field4');
-select col_not_null('ViewTable', 'Field4');
-select col_has_default('ViewTable', 'Field4');
 
 \ir ./test-insert.sql
+\ir ./test-update.sql
 
 -- Finish the tests and clean up.
 select * from finish();
