@@ -62,7 +62,6 @@ begin
   end if;
 
   if method = 'delete' then
-    raise notice 'using delete = %', p;
     delete from "Table" where "ID"=p."ID";
     return;
   end if;

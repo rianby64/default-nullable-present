@@ -50,4 +50,4 @@ select has_column('ViewTable', 'Field4');
 
 -- Finish the tests and clean up.
 select * from finish();
-rollback;
+commit;
