@@ -1,5 +1,12 @@
 
-\ir ./JSONRPC.sql
+create or replace function send_jsonrpc(request json)
+  returns void
+  language 'plpgsql' volatile
+as $$
+begin
+  perform pg_notify('jsonrpc', request::text);
+end;
+$$;
 
 create table if not exists "Table"
 (

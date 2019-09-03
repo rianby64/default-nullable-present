@@ -18,8 +18,10 @@ create extension if not exists pgtap;
 \ir ./definitions.sql
 \ir ./definitions.sql
 
+\ir ./JSONRPC.sql
+
 -- Plan the tests.
-select plan(17);
+select plan(18);
 
 
 select has_table('Table');
@@ -44,6 +46,7 @@ select has_column('ViewTable', 'Field4');
 
 \ir ./test-insert.sql
 \ir ./test-update.sql
+\ir ./test-delete.sql
 
 -- Finish the tests and clean up.
 select * from finish();
