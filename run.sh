@@ -9,3 +9,6 @@ sleep 2
 
 docker build -t test-run -f test-run.Dockerfile .
 docker run --rm --name test-run --net arca-net test-run
+
+docker stop test-prepare
+docker network rm arca-net
